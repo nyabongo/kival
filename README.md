@@ -1,2 +1,2 @@
 # kival
-A key value store with a pretty-ish an standard interface
+A key value store with a pretty-ish and standard interface
