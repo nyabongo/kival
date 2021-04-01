@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 
 type requestBody = {
@@ -21,5 +21,9 @@ export class AppController {
   @Post('/:type')
   createEntry(@Body() body: requestBody): any {
     return this.appService.createEntry(body.data.type, body.data.attributes);
+  }
+  @Get('/:type/:id')
+  getEntryById(@Param('type') type: string, @Param('id') id: string) {
+    return this.appService.getEntryById(type, id);
   }
 }
