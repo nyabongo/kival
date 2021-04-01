@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { AppService } from './app.service';
 
@@ -32,6 +40,19 @@ export class AppController {
   }
   @Post('/:type')
   createEntry(@Body() body: PostBody, @Param('type') type: string): any {
+    if (body.data.type !== type) {
+      throw new HttpException(
+        {
+          errors: [
+            {
+              title: 'Bad Request',
+              details: `The URL type parameter "${type}" does not match the data attribute: "${body.data.type}"`,
+            },
+          ],
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     return this.appService.createEntry(body.data.type, body.data.attributes);
   }
   @Get('/:type/:id')
