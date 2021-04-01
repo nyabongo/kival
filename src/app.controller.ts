@@ -1,14 +1,26 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { ApiProperty } from '@nestjs/swagger';
 import { AppService } from './app.service';
 
-type requestBody = {
-  data: {
-    type: string;
-    attributes: {
-      [propName: string]: string | number | boolean;
-    };
+class Data {
+  @ApiProperty({ type: 'string', example: 'superheroes' })
+  type: string;
+
+  @ApiProperty({
+    type: 'object',
+    example: {
+      name: 'Superman',
+      alias: 'Clark Kent',
+    },
+  })
+  attributes: {
+    [propName: string]: string | number | boolean;
   };
-};
+}
+class PostBody {
+  @ApiProperty()
+  data: Data;
+}
 
 @Controller()
 export class AppController {
@@ -19,7 +31,7 @@ export class AppController {
     return this.appService.getHello();
   }
   @Post('/:type')
-  createEntry(@Body() body: requestBody): any {
+  createEntry(@Body() body: PostBody, @Param('type') type: string): any {
     return this.appService.createEntry(body.data.type, body.data.attributes);
   }
   @Get('/:type/:id')
