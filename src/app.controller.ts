@@ -9,25 +9,14 @@ import {
 } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { AppService } from './app.service';
+import {
+  PostResourceObject,
+  ResourceObject,
+} from './json-api/resource-objects';
 
-class Data {
-  @ApiProperty({ type: 'string', example: 'superheroes' })
-  type: string;
-
-  @ApiProperty({
-    type: 'object',
-    example: {
-      name: 'Superman',
-      alias: 'Clark Kent',
-    },
-  })
-  attributes: {
-    [propName: string]: string | number | boolean;
-  };
-}
 class PostBody {
   @ApiProperty()
-  data: Data;
+  data: PostResourceObject;
 }
 
 @Controller()
@@ -38,6 +27,7 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+
   @Post('/:type')
   createEntry(@Body() body: PostBody, @Param('type') type: string): any {
     if (body.data.type !== type) {
@@ -55,8 +45,10 @@ export class AppController {
     }
     return this.appService.createItem(body.data.type, body.data.attributes);
   }
+
   @Get('/:type/:id')
   getEntryById(@Param('type') type: string, @Param('id') id: string) {
     return this.appService.findById(type, id);
   }
+
 }

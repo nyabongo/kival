@@ -1,19 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
-
-type attributes = {
-  [propName: string]: string | number | boolean;
-};
-type EntryResponse = {
-  type: string;
-  id: string;
-  attributes: attributes;
-};
-
-export interface IRestableService {
-  createItem(type: string, body: attributes): Promise<EntryResponse>;
-  findById(type: string, id: string): Promise<EntryResponse>;
-}
+import {
+  attributes,
+  IRestableService,
+  ResourceResponse,
+} from './IRestableService';
 
 @Injectable()
 export class AppService implements IRestableService {
@@ -24,7 +15,7 @@ export class AppService implements IRestableService {
   getHello(): string {
     return 'Hello World!';
   }
-  createItem(type: string, body: attributes): Promise<EntryResponse> {
+  createItem(type: string, body: attributes): Promise<ResourceResponse> {
     const id = uuidv4();
     this.db = {
       ...this.db,
@@ -34,17 +25,21 @@ export class AppService implements IRestableService {
       },
     };
     return Promise.resolve({
-      type,
-      id: id,
-      attributes: body,
+      data: {
+        type,
+        id: id,
+        attributes: body,
+      },
     });
   }
-  findById(type: string, id: string): Promise<EntryResponse> {
+  findById(type: string, id: string): Promise<ResourceResponse> {
     const entry = this.db[type][id];
     return Promise.resolve({
-      type,
-      id,
-      attributes: entry,
+      data: {
+        type,
+        id,
+        attributes: entry,
+      },
     });
   }
 }

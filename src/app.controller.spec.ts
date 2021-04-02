@@ -43,10 +43,10 @@ describe('AppController', () => {
 
         const spy = jest
           .spyOn(appService, 'findById')
-          .mockResolvedValue(fakeResult);
+          .mockResolvedValue({ data: fakeResult });
         const response = await appController.getEntryById(type, id);
         expect(spy).toHaveBeenCalledWith(type, id);
-        expect(response).toBe(fakeResult);
+        expect(response).toEqual({ data: fakeResult });
       });
     });
     describe('CreateEntry', () => {
@@ -71,7 +71,7 @@ describe('AppController', () => {
       it('should  return the result of Appservice.createEntry', async () => {
         const spy = jest
           .spyOn(appService, 'createItem')
-          .mockResolvedValue(fakeResult);
+          .mockResolvedValue({ data: fakeResult });
         const response = await appController.createEntry(
           requestBody,
           requestBody.data.type,
@@ -80,7 +80,7 @@ describe('AppController', () => {
           requestBody.data.type,
           requestBody.data.attributes,
         );
-        expect(response).toBe(fakeResult);
+        expect(response).toEqual({ data: fakeResult });
       });
     });
   });
