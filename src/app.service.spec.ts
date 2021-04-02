@@ -23,15 +23,15 @@ describe('AppService', () => {
     });
 
     it('should return the body, type and created id when createEntry is called', async () => {
-      expect(await appService.createEntry(type, body)).toEqual({
+      expect(await appService.createItem(type, body)).toEqual({
         type: type,
         id: mockUUID,
         attributes: body,
       });
     });
     it('should be able to return the created entry using getEntryById', async () => {
-      const response = await appService.createEntry(type, body);
-      const entry = await appService.getEntryById(type, response.id);
+      const response = await appService.createItem(type, body);
+      const entry = await appService.findById(type, response.id);
       expect(entry).toEqual({
         type,
         id: mockUUID,

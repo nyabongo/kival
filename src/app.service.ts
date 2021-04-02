@@ -9,8 +9,14 @@ type EntryResponse = {
   id: string;
   attributes: attributes;
 };
+
+export interface IRestableService {
+  createItem(type: string, body: attributes): Promise<EntryResponse>;
+  findById(type: string, id: string): Promise<EntryResponse>;
+}
+
 @Injectable()
-export class AppService {
+export class AppService implements IRestableService {
   db: Record<string, any>;
   constructor() {
     this.db = {};
@@ -18,7 +24,7 @@ export class AppService {
   getHello(): string {
     return 'Hello World!';
   }
-  createEntry(type: string, body: attributes): Promise<EntryResponse> {
+  createItem(type: string, body: attributes): Promise<EntryResponse> {
     const id = uuidv4();
     this.db = {
       ...this.db,
@@ -33,7 +39,7 @@ export class AppService {
       attributes: body,
     });
   }
-  getEntryById(type: string, id: string): Promise<EntryResponse> {
+  findById(type: string, id: string): Promise<EntryResponse> {
     const entry = this.db[type][id];
     return Promise.resolve({
       type,

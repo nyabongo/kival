@@ -42,7 +42,7 @@ describe('AppController', () => {
         const { type, id } = fakeResult;
 
         const spy = jest
-          .spyOn(appService, 'getEntryById')
+          .spyOn(appService, 'findById')
           .mockResolvedValue(fakeResult);
         const response = await appController.getEntryById(type, id);
         expect(spy).toHaveBeenCalledWith(type, id);
@@ -70,7 +70,7 @@ describe('AppController', () => {
       });
       it('should  return the result of Appservice.createEntry', async () => {
         const spy = jest
-          .spyOn(appService, 'createEntry')
+          .spyOn(appService, 'createItem')
           .mockResolvedValue(fakeResult);
         const response = await appController.createEntry(
           requestBody,

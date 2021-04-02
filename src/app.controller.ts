@@ -53,10 +53,10 @@ export class AppController {
         HttpStatus.BAD_REQUEST,
       );
     }
-    return this.appService.createEntry(body.data.type, body.data.attributes);
+    return this.appService.createItem(body.data.type, body.data.attributes);
   }
   @Get('/:type/:id')
   getEntryById(@Param('type') type: string, @Param('id') id: string) {
-    return this.appService.getEntryById(type, id);
+    return this.appService.findById(type, id);
   }
 }
