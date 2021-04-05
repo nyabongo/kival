@@ -1,21 +1,26 @@
 import { ResourceObject } from './json-api/resource-objects';
 
-export type attributes = {
+export type AttributeType = {
   [propName: string]: string | number | boolean;
 };
 
 export type EntryResponse = {
   type: string;
   id: string;
-  attributes: attributes;
+  attributes: AttributeType;
 };
 export type ResourceResponse = {
   data: ResourceObject;
 };
 
 export interface IRestableService {
-  createItem(type: string, body: attributes): Promise<ResourceResponse>;
+  createItem(type: string, body: AttributeType): Promise<ResourceResponse>;
 
   findById(type: string, id: string): Promise<ResourceResponse>;
 
+  editItem(
+    type: string,
+    id: string,
+    attributes: AttributeType,
+  ): Promise<ResourceResponse>;
 }

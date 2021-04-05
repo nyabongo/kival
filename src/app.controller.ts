@@ -5,6 +5,7 @@ import {
   HttpException,
   HttpStatus,
   Param,
+  Patch,
   Post,
 } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
@@ -18,7 +19,10 @@ class PostBody {
   @ApiProperty()
   data: PostResourceObject;
 }
-
+class PatchBody {
+  @ApiProperty()
+  data: ResourceObject;
+}
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
@@ -51,4 +55,12 @@ export class AppController {
     return this.appService.findById(type, id);
   }
 
+  @Patch('/:type/:id')
+  updateResource(
+    @Param('id') id: string,
+    @Param('type') type: string,
+    @Body() body: PatchBody,
+  ) {
+    return this.appService.editItem(type, id, body.data.attributes);
+  }
 }

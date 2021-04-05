@@ -49,6 +49,7 @@ describe('AppController', () => {
         expect(response).toEqual({ data: fakeResult });
       });
     });
+
     describe('CreateEntry', () => {
       it('should throw an httpexception with a bad request status if the url type does not match the data type', () => {
         const otherType = 'not' + requestBody.data.type;
@@ -80,6 +81,24 @@ describe('AppController', () => {
           requestBody.data.type,
           requestBody.data.attributes,
         );
+        expect(response).toEqual({ data: fakeResult });
+      });
+    });
+
+    describe('PATCH /:type/:id', () => {
+      it('should return the result of  appService.editItem(id,type,attributes)', async () => {
+        const { id, type } = fakeResult;
+        const updatedResource = {
+          ...fakeResult,
+          attributes: { new: 'Resource property' },
+        };
+        const spy = jest
+          .spyOn(appService, 'editItem')
+          .mockResolvedValue({ data: fakeResult });
+        const response = await appController.updateResource(id, type, {
+          data: updatedResource,
+        });
+        expect(spy).toHaveBeenCalledWith(type, id, updatedResource.attributes);
         expect(response).toEqual({ data: fakeResult });
       });
     });
