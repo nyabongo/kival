@@ -37,7 +37,7 @@ describe('AppController', () => {
     });
   });
   describe('/:type', () => {
-    describe('GET /:type', () => {
+    describe('GET /:type/:id', () => {
       it('should return the result of appservice.getEntryById', async () => {
         const { type, id } = fakeResult;
 
@@ -47,6 +47,18 @@ describe('AppController', () => {
         const response = await appController.getEntryById(type, id);
         expect(spy).toHaveBeenCalledWith(type, id);
         expect(response).toEqual({ data: fakeResult });
+      });
+    });
+
+    describe('GET /:type', () => {
+      it('should return the result of appService.getItemsByType', async () => {
+        const { type } = fakeResult;
+        const spy = jest
+          .spyOn(appService, 'getItemsByType')
+          .mockResolvedValue({ data: [fakeResult] });
+        const response = await appController.fetchItemsByType(type);
+        expect(spy).toHaveBeenCalledWith(type);
+        expect(response).toEqual({ data: [fakeResult] });
       });
     });
 

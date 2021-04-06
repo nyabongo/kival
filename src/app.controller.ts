@@ -32,6 +32,10 @@ export class AppController {
     return this.appService.getHello();
   }
 
+  @Get('/:type')
+  fetchItemsByType(@Param('type') type: string) {
+    return this.appService.getItemsByType(type);
+  }
   @Post('/:type')
   createEntry(@Body() body: PostBody, @Param('type') type: string): any {
     if (body.data.type !== type) {

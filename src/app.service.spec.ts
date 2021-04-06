@@ -6,11 +6,9 @@ jest.mock('uuid');
 
 describe('AppService', () => {
   let appService: AppService;
-  let mockUUID;
+  let uuidSpy: jest.SpyInstance;
   beforeEach(() => {
-    const uuidSpy = jest.spyOn(uuid, 'v4');
-    mockUUID = new Date().toISOString();
-    uuidSpy.mockReturnValue(mockUUID);
+    uuidSpy = jest.spyOn(uuid, 'v4');
     appService = new AppService();
   });
 
@@ -21,6 +19,15 @@ describe('AppService', () => {
   describe('createEntry', () => {
     const type = 'MockType';
     const body = { some: 'Object' };
+    let mockUUID;
+
+    beforeEach(() => {
+      mockUUID = new Date().toISOString();
+      uuidSpy.mockReturnValue(mockUUID);
+    });
+    afterAll(() => {
+      uuidSpy.mockRestore();
+    });
 
     it('should return the body, type and created id when createEntry is called', async () => {
       expect(await appService.createItem(type, body)).toEqual({
@@ -92,6 +99,42 @@ describe('AppService', () => {
       expect(type).toBe(item.data.type);
       expect(alias).toBe(changedAlias);
       expect(residence).toBe(newAttribute);
+    });
+  });
+
+  describe('List Items', () => {
+    const someItems = [
+      { item: 1 },
+      { item: 2 },
+      { item: 3 },
+      { item: 4 },
+      { item: 5 },
+    ];
+    const type = 'someItems';
+    beforeEach(async () => {
+      for (const item of someItems) {
+        uuidSpy.mockReturnValueOnce(`${item.item}`);
+        await appService.createItem(type, item);
+      }
+    });
+
+    it('should return all the items of a given type when getItemsByType is called', async () => {
+      const response = await appService.getItemsByType(type);
+      expect(response).toEqual({
+        data: someItems.map((item) => {
+          return {
+            type,
+            id: expect.any(String),
+            attributes: item,
+          };
+        }),
+      });
+    });
+
+    it('should return an empty data array when getItemsByType is called for an empty type', async () => {
+      const emptyType = 'EmptyType';
+      const response = await appService.getItemsByType(emptyType);
+      expect(response).toEqual({ data: [] });
     });
   });
 });

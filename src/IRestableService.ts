@@ -12,6 +12,9 @@ export type EntryResponse = {
 export type ResourceResponse = {
   data: ResourceObject;
 };
+export type ResourceListResponse = {
+  data: ResourceObject[];
+};
 
 export interface IRestableService {
   createItem(type: string, body: AttributeType): Promise<ResourceResponse>;
@@ -23,4 +26,6 @@ export interface IRestableService {
     id: string,
     attributes: AttributeType,
   ): Promise<ResourceResponse>;
+
+  getItemsByType(type: string): Promise<ResourceListResponse>;
 }

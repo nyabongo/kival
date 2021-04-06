@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import {
   AttributeType,
   IRestableService,
+  ResourceListResponse,
   ResourceResponse,
 } from './IRestableService';
 
@@ -11,6 +12,28 @@ export class AppService implements IRestableService {
   db: Record<string, any>;
   constructor() {
     this.db = {};
+  }
+  getItemsByType(type: string): Promise<ResourceListResponse> {
+    const typeCollection = this.getTypeCollection(type);
+    const items =
+      typeCollection === undefined
+        ? []
+        : Object.entries(typeCollection).map((kv) => {
+            const key: string = kv[0];
+            const value: Record<string, any> = kv[1];
+            return {
+              type,
+              id: key,
+              attributes: value,
+            };
+          });
+    return Promise.resolve({
+      data: items,
+    });
+  }
+
+  private getTypeCollection(type: string) {
+    return this.db[type];
   }
 
   private getEntryByTypeAndId(type: string, id: string) {
