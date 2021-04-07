@@ -10,7 +10,7 @@ async function bootstrap() {
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('restable', app, document);
+  SwaggerModule.setup('api_doc', app, document);
   await app.listen(3000);
 }
 bootstrap();

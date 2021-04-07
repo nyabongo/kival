@@ -24,7 +24,7 @@ describe('main.ts', () => {
   });
   it('should setup the openapi documentation with the app and the swagger document', () => {
     expect(mockSwaggerSetup).toHaveBeenCalledWith(
-      'restable',
+      'api_doc',
       mockApp,
       mockSwagger,
     );

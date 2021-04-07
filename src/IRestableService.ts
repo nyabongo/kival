@@ -1,20 +1,23 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { ResourceObject } from './json-api/resource-objects';
 
-export type AttributeType = {
+export class AttributeType {
   [propName: string]: string | number | boolean;
-};
+}
 
-export type EntryResponse = {
+export class EntryResponse {
   type: string;
   id: string;
   attributes: AttributeType;
-};
-export type ResourceResponse = {
+}
+export class ResourceResponse {
+  @ApiProperty()
   data: ResourceObject;
-};
-export type ResourceListResponse = {
+}
+export class ResourceListResponse {
+  @ApiProperty({ type: [ResourceObject] })
   data: ResourceObject[];
-};
+}
 
 export interface IRestableService {
   createItem(type: string, body: AttributeType): Promise<ResourceResponse>;

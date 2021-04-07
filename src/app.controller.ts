@@ -8,8 +8,9 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiResponse } from '@nestjs/swagger';
 import { AppService } from './app.service';
+import { ResourceListResponse } from './IRestableService';
 import {
   PostResourceObject,
   ResourceObject,
@@ -33,10 +34,16 @@ export class AppController {
   }
 
   @Get('/:type')
+  @ApiResponse({ status: 200, type: ResourceListResponse })
   fetchItemsByType(@Param('type') type: string) {
     return this.appService.getItemsByType(type);
   }
   @Post('/:type')
+  @ApiResponse({
+    status: 201,
+    type: ResourceObject,
+    description: 'Created new Resource, responds with resource object',
+  })
   createEntry(@Body() body: PostBody, @Param('type') type: string): any {
     if (body.data.type !== type) {
       throw new HttpException(
@@ -55,11 +62,14 @@ export class AppController {
   }
 
   @Get('/:type/:id')
+  @ApiResponse({ status: 200, type: ResourceObject })
+  @ApiResponse({ status: 404, description: 'Failed to find resource' })
   getEntryById(@Param('type') type: string, @Param('id') id: string) {
     return this.appService.findById(type, id);
   }
 
   @Patch('/:type/:id')
+  @ApiResponse({ status: 200, type: ResourceObject })
   updateResource(
     @Param('id') id: string,
     @Param('type') type: string,
