@@ -9,6 +9,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "prebuild": "rimraf dist",
+    "prepublish": "rimraf dist; nest build",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
