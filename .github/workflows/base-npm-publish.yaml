@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 12
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
       - run: npm run test:e2e
       - run: npm publish --access=public
         env:
