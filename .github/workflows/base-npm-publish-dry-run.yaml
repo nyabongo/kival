@@ -4,9 +4,7 @@ on:
   pull_request:
     branches:
       - main
-defaults:
-  run:
-    working-directory: base
+      
 jobs:
   publish:
     runs-on: ubuntu-latest
