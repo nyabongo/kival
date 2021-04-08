@@ -16,7 +16,8 @@ jobs:
       - name: Install Dependencies
         run: npm ci
       - run: npm run test:e2e
-      - name: "NPM Publish Dry Run"
-        run: npm publish --access=public --dry-run
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
+          dry-run: true
+          access: public
