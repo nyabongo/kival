@@ -16,9 +16,9 @@ jobs:
         with:
           node-version: 12
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
       - run: npm run test:e2e
       - name: "NPM Publish Dry Run"
-        run: npm publish --dry-run
+        run: npm publish --access=public --dry-run
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
