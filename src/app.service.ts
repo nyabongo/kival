@@ -55,9 +55,6 @@ export class AppService implements IRestableService {
     return Promise.resolve({ data: newEntry });
   }
 
-  getHello(): string {
-    return 'Hello World!';
-  }
   createItem(type: string, body: AttributeType): Promise<ResourceResponse> {
     const id = uuidv4();
     this.db = {

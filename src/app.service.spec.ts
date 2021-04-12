@@ -12,10 +12,6 @@ describe('AppService', () => {
     appService = new AppService();
   });
 
-  it('should return "Hello World!" whel getHello is called', () => {
-    expect(appService.getHello()).toBe('Hello World!');
-  });
-
   describe('createEntry', () => {
     const type = 'MockType';
     const body = { some: 'Object' };
