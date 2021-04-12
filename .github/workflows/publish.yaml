@@ -1,4 +1,4 @@
-name: Publish Base to npm
+name: Publish to NPM and Container Registry
 
 on:
   push:
