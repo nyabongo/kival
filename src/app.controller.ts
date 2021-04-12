@@ -28,11 +28,6 @@ class PatchBody {
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
-
   @Get('/:type')
   @ApiResponse({ status: 200, type: ResourceListResponse })
   fetchItemsByType(@Param('type') type: string) {
