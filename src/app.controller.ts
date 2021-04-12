@@ -8,7 +8,13 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { ApiProperty, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiParam,
+  ApiProperty,
+  ApiResponse,
+} from '@nestjs/swagger';
 import { AppService } from './app.service';
 import { ResourceListResponse } from './IRestableService';
 import {
@@ -29,13 +35,17 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get('/:type')
-  @ApiResponse({ status: 200, type: ResourceListResponse })
+  @ApiParam({ name: 'type', example: 'superheroes', allowEmptyValue: false })
+  @ApiOkResponse({
+    description: 'Fetch all resources of a type',
+    type: ResourceListResponse,
+  })
   fetchItemsByType(@Param('type') type: string) {
     return this.appService.getItemsByType(type);
   }
   @Post('/:type')
-  @ApiResponse({
-    status: 201,
+  @ApiParam({ name: 'type', example: 'superheroes', allowEmptyValue: false })
+  @ApiCreatedResponse({
     type: ResourceObject,
     description: 'Created new Resource, responds with resource object',
   })
@@ -57,6 +67,8 @@ export class AppController {
   }
 
   @Get('/:type/:id')
+  @ApiParam({ name: 'type', example: 'superheroes', allowEmptyValue: false })
+  @ApiParam({ name: 'id', type: 'string', allowEmptyValue: false })
   @ApiResponse({ status: 200, type: ResourceObject })
   @ApiResponse({ status: 404, description: 'Failed to find resource' })
   getEntryById(@Param('type') type: string, @Param('id') id: string) {
@@ -64,7 +76,14 @@ export class AppController {
   }
 
   @Patch('/:type/:id')
-  @ApiResponse({ status: 200, type: ResourceObject })
+  @ApiParam({ name: 'type', example: 'superheroes', allowEmptyValue: false })
+  @ApiParam({ name: 'id', type: 'string', allowEmptyValue: false })
+  @ApiResponse({
+    status: 200,
+    description: 'Edit a resource',
+    type: ResourceObject,
+  })
+  @ApiResponse({ status: 404, description: 'Failed to find resource' })
   updateResource(
     @Param('id') id: string,
     @Param('type') type: string,
